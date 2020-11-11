@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 933b3ce9c181d5f479938edbecb3ec2b, type: 3}
+  m_Name: Moon Populate Settings
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  radius: 40
+  numSamplesBeforeRejection: 10
+  objectList:
+  - {fileID: 100000, guid: d209be13548e70947bc39053977ce977, type: 3}
+  - {fileID: 100000, guid: 5f36b57d675b1444cb2203b7a6cac6cb, type: 3}
+  objectInfoList:
+  - gameObject: {fileID: 100000, guid: d209be13548e70947bc39053977ce977, type: 3}
+    radius: 40
+    probability: 0.3
+  - gameObject: {fileID: 100000, guid: 5f36b57d675b1444cb2203b7a6cac6cb, type: 3}
+    radius: 30
+    probability: 0.6
+  - gameObject: {fileID: 100000, guid: 940d55d4117386f4f9398ea3ff52d4cd, type: 3}
+    radius: 50
+    probability: 0.05
+  - gameObject: {fileID: 100000, guid: 27bfdb9a40efac94b969eaf77cea92d9, type: 3}
+    radius: 50
+    probability: 0.05
+  radiiArray:
+  - 40
+  - 30
+  - 50
+  - 50
+  ratioArray:
+  - 0.3
+  - 0.6
+  - 0.05
+  - 0.05

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e79a65ffd82b4b438035834f4618f86, type: 3}
+  m_Name: Moon Texture
+  m_EditorClassIdentifier: 
+  autoUpdate: 1
+  layers:
+  - texture: {fileID: 2800000, guid: 7f3df385222f5b1428f6a156037deb5e, type: 3}
+    tint: {r: 0.8862745, g: 0, b: 0.875, a: 1}
+    tintStrength: 0.056
+    startHeight: 0
+    blendStrength: 0
+    textureScale: 30
+    brightnessCorrection: -0.16
+  curveStrength: 2
+  curveFalloff: 0
