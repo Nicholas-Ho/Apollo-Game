@@ -37,10 +37,9 @@ public class TerrainChunk
 
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;
-    PopulateSettings populateSettings;
 
     Transform viewer;
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, PopulateSettings populateSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material, Transform viewer, bool endless)
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material, Transform viewer, bool endless)
     {
         this.endless = endless;
 
@@ -48,7 +47,6 @@ public class TerrainChunk
 
         this.heightMapSettings = heightMapSettings;
         this.meshSettings = meshSettings;
-        this.populateSettings = populateSettings;
 
         this.coord = coord;
 
@@ -91,6 +89,7 @@ public class TerrainChunk
         meshObject.transform.position = new Vector3(position.x, 0, position.y);
 
         meshFilter.mesh = null;
+        meshCollider.sharedMesh = null;
 
         Array.Clear(lodMeshes, 0, lodMeshes.Length);
         for(int i = 0; i < detailLevels.Length; i++){
@@ -101,8 +100,10 @@ public class TerrainChunk
             }
         }
 
-        this.heightMapReceived = false;
-        this.hasSetCollider = false;
+        heightMapReceived = false;
+        hasSetCollider = false;
+
+        populated = false;
 
         wasReassigned = true;
     }
@@ -149,11 +150,6 @@ public class TerrainChunk
                         previousLODIndex = lodIndex;
                         meshFilter.mesh = lodMesh.mesh;
                         wasReassigned = false;
-
-                        if(lodIndex == 0 && !populated){
-                            Populate();
-                            populated = true;
-                        }
                     } else if(!lodMesh.hasRequestedMesh){
                         lodMesh.RequestMesh(heightMap, meshSettings);
                     }
@@ -170,7 +166,7 @@ public class TerrainChunk
         }
     }
 
-    public void UpdateTerrainChunkEndless(int currentChunkCoordY)
+    public void UpdateTerrainChunk(int currentChunkCoordY)
     {
         bool wasVisible = isVisible();
 
@@ -227,13 +223,22 @@ public class TerrainChunk
                     lodMeshes[colliderLODIndex].RequestMesh(heightMap, meshSettings);
                 }
             }
+            
+            if(lodMeshes[colliderLODIndex].hasMesh){
+                meshCollider.sharedMesh = lodMeshes[colliderLODIndex].mesh;
+                hasSetCollider = true;
 
-            if(sqrDistFromViewerToEdge < colliderGenerationViewingDist * colliderGenerationViewingDist){
+                if(!populated){
+                    Populate();
+                    populated = true;
+                }
+            }
+            /*if(sqrDistFromViewerToEdge < colliderGenerationViewingDist * colliderGenerationViewingDist){
                 if(lodMeshes[colliderLODIndex].hasMesh){
                     meshCollider.sharedMesh = lodMeshes[colliderLODIndex].mesh;
                     hasSetCollider = true;
                 }
-            }
+            }*/
         }
     }
 
@@ -246,16 +251,32 @@ public class TerrainChunk
     }
 
     void Populate(){
-        /*Vector2 regionSize = new Vector2(meshSettings.meshWorldSize, meshSettings.meshWorldSize);
-        List<Vector2> objectPositions = PoissonDiscSampling.GeneratePoints(populateSettings.radius, regionSize, populateSettings.numSamplesBeforeRejection);
+        /*float maxHeight = heightMapSettings.maxHeight;
+        Transform transform = this.meshObject.GetComponent<Transform>();
 
-        if(objectPositions != null){
-            foreach(Vector2 objectPosition in objectPositions){
+        Vector2 regionSize = new Vector2(meshSettings.meshWorldSize, meshSettings.meshWorldSize);
+        List<Vector3> objectPositions = PoissonDiscSampling.GeneratePointsVariableRadii(populateSettings.radiiArray, populateSettings.ratioArray, regionSize, populateSettings.numSamplesBeforeRejection, "object_index");
+
+        RaycastHit hit;
+        if(objectPositions != null && objectPositions.Count > 0){
+            Debug.Log(objectPositions.Count);
+            foreach(Vector3 objectPosition in objectPositions){
+                int objectIndex = (int)objectPosition.z;
+
                 float xPos = coord.x * meshSettings.meshWorldSize + (objectPosition.x - (meshSettings.meshWorldSize / 2));
                 float zPos = coord.y * meshSettings.meshWorldSize + (objectPosition.y - (meshSettings.meshWorldSize / 2));
-                Vector3 objectPos3D = new Vector3(0, 0, 0);
+                Ray ray = new Ray(new Vector3(xPos, maxHeight, zPos), Vector3.down);
+                if(meshCollider.Raycast(ray, out hit, maxHeight)){
+                    Vector3 objectPos3D = new Vector3(xPos, maxHeight - hit.distance, zPos);
+                    Debug.Log(objectPos3D);
+                    Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal.normalized);
+                    GameObject newObject = GameObject.Instantiate(populateSettings.objectInfoList[objectIndex].gameObject, objectPos3D, rotation);
+                    newObject.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up);
+                }
             }
         }*/
+        PopulationObjectManager populationObjectManager = UnityEngine.Object.FindObjectOfType<PopulationObjectManager>();
+        populationObjectManager.Populate(coord, heightMapSettings.maxHeight, meshSettings.meshWorldSize, meshCollider);
     }
 }
 
@@ -276,7 +297,8 @@ class LODMesh{
     }
 
     public void OnMeshDataReceived(object meshDataObject){
-        mesh = ((MeshData)meshDataObject).createMesh();
+        MeshData meshData = (MeshData) meshDataObject;
+        mesh = meshData.createMesh();
         hasMesh = true;
 
         updateCallback();

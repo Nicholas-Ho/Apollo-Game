@@ -7,7 +7,7 @@ public class PopulateSettings : UpdatableObject
 {
     public float radius;
     public int numSamplesBeforeRejection;
-    public List<GameObject> objectList = new List<GameObject>();
+    public List<GameObject> simpleObjectList = new List<GameObject>();
     public List<PopulateObjectsInfo> objectInfoList = new List<PopulateObjectsInfo>();
 
     [HideInInspector]

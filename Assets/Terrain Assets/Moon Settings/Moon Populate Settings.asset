@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   radius: 40
-  numSamplesBeforeRejection: 10
+  numSamplesBeforeRejection: 20
   objectList:
   - {fileID: 100000, guid: d209be13548e70947bc39053977ce977, type: 3}
   - {fileID: 100000, guid: 5f36b57d675b1444cb2203b7a6cac6cb, type: 3}

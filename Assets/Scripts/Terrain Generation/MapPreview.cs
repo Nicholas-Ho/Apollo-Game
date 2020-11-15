@@ -96,7 +96,7 @@ public class MapPreview : MonoBehaviour
                         Vector3 objectPos3D = new Vector3(xPos, maxHeight - hit.distance, zPos);
                         Debug.Log(objectPos3D);
                         Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal.normalized);
-                        sceneObjects.Add(Instantiate(populateSettings.objectList[Random.Range(0, populateSettings.objectList.Count)], objectPos3D, rotation));
+                        sceneObjects.Add(Instantiate(populateSettings.simpleObjectList[Random.Range(0, populateSettings.simpleObjectList.Count)], objectPos3D, rotation));
                         sceneObjects[sceneObjects.Count - 1].transform.rotation = Quaternion.AngleAxis(Random.Range(0, 360), transform.up);
 
                         sceneObjects[sceneObjects.Count - 1].transform.parent = transform;

@@ -10,7 +10,6 @@ public class TerrainGenerator : MonoBehaviour
     public MeshSettings meshSettings;
     public HeightMapSettings heightMapSettings;
     public TextureData textureSettings;
-    public PopulateSettings populateSettings;
 
     public bool endlessMode;
     public int colliderLODIndex;
@@ -79,7 +78,7 @@ public class TerrainGenerator : MonoBehaviour
                     if(terrainChunkDict.ContainsKey(viewedChunkCoord)){
                         terrainChunkDict[viewedChunkCoord].UpdateTerrainChunk();
                     } else {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, populateSettings, detailLevels, colliderLODIndex, transform, mapMaterial, viewer, false);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, mapMaterial, viewer, false);
                         terrainChunkDict.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChange += OnChunkVisibilityChange;
                         newChunk.Load();
@@ -96,7 +95,7 @@ public class TerrainGenerator : MonoBehaviour
 
         for(int i = VisibleTerrainChunks.Count - 1; i >= 0; i--){
             alreadyUpdatedChunkCoords.Add(VisibleTerrainChunks[i].coord);
-            VisibleTerrainChunks[i].UpdateTerrainChunkEndless(currentChunkCoordY);
+            VisibleTerrainChunks[i].UpdateTerrainChunk(currentChunkCoordY); // UpdateTerrainChunk is overloaded
         }
 
         // Make sure that "forward" is the positive z direction!
@@ -106,7 +105,7 @@ public class TerrainGenerator : MonoBehaviour
 
                 if(!alreadyUpdatedChunkCoords.Contains(viewedChunkCoord)){
                     if(terrainChunkDict.ContainsKey(viewedChunkCoord)){
-                        terrainChunkDict[viewedChunkCoord].UpdateTerrainChunkEndless(currentChunkCoordY);
+                        terrainChunkDict[viewedChunkCoord].UpdateTerrainChunk(currentChunkCoordY);
                     } else if(terrainChunkPool.Count > 0){
                         TerrainChunk chunk = terrainChunkPool[terrainChunkPool.Count - 1];
                         terrainChunkDict.Remove(chunk.coord);
@@ -116,7 +115,7 @@ public class TerrainGenerator : MonoBehaviour
                         chunk.Load();
                         terrainChunkDict.Add(viewedChunkCoord, chunk);
                     } else {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, populateSettings, detailLevels, colliderLODIndex, transform, mapMaterial, viewer, true);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, mapMaterial, viewer, true);
                         terrainChunkDict.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChange += OnChunkVisibilityChange;
                         newChunk.onVisibilityChangeEndless += OnChunkVisibilityChangeEndless;
