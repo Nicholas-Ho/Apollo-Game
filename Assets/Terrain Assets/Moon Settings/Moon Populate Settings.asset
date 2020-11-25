@@ -15,29 +15,27 @@ MonoBehaviour:
   autoUpdate: 1
   radius: 40
   numSamplesBeforeRejection: 20
-  objectList:
-  - {fileID: 100000, guid: d209be13548e70947bc39053977ce977, type: 3}
-  - {fileID: 100000, guid: 5f36b57d675b1444cb2203b7a6cac6cb, type: 3}
+  simpleObjectList: []
   objectInfoList:
-  - gameObject: {fileID: 100000, guid: d209be13548e70947bc39053977ce977, type: 3}
-    radius: 40
+  - gameObject: {fileID: 100000, guid: 5d4cffe5f1249a046b3bc42bbd99dc47, type: 3}
+    radius: 20
+    probability: 0.2
+  - gameObject: {fileID: 100008, guid: 54a9cf01843431742a3126013891032d, type: 3}
+    radius: 20
     probability: 0.3
-  - gameObject: {fileID: 100000, guid: 5f36b57d675b1444cb2203b7a6cac6cb, type: 3}
-    radius: 30
-    probability: 0.6
   - gameObject: {fileID: 100000, guid: 940d55d4117386f4f9398ea3ff52d4cd, type: 3}
-    radius: 50
-    probability: 0.05
+    radius: 40
+    probability: 0.25
   - gameObject: {fileID: 100000, guid: 27bfdb9a40efac94b969eaf77cea92d9, type: 3}
-    radius: 50
-    probability: 0.05
+    radius: 40
+    probability: 0.25
   radiiArray:
+  - 20
+  - 20
   - 40
-  - 30
-  - 50
-  - 50
+  - 40
   ratioArray:
+  - 0.2
   - 0.3
-  - 0.6
-  - 0.05
-  - 0.05
+  - 0.25
+  - 0.25

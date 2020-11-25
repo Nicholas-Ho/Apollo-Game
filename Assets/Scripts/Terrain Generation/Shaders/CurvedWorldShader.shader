@@ -47,6 +47,38 @@ Shader "Custom/CurvedWorldShader"
             float3 worldPos;
             float3 worldNormal;
         };
+
+        float4 curveWorld(float4 position){
+            curveStrength *= 0.0001;
+
+            position = mul(unity_ObjectToWorld, position);
+
+            float3 origin = _WorldSpaceCameraPos;
+
+            float dist = position.z - origin.z;
+            dist = max(0, dist - curveFalloff);
+            float offset = curveStrength * dist * dist;
+
+            position.y -= offset;
+
+            return mul(unity_WorldToObject, position);
+        }
+
+        float3 inverseCurveWorld(float3 position){
+            curveStrength *= 0.0001;
+
+            position = mul(unity_ObjectToWorld, position);
+
+            float3 origin = _WorldSpaceCameraPos;
+
+            float dist = position.z - origin.z;
+            dist = max(0, dist - curveFalloff);
+            float offset = curveStrength * dist * dist;
+
+            position.y += offset;
+
+            return mul(unity_WorldToObject, position);
+        }
         
         float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex){
             //Triplanar Mapping
@@ -60,19 +92,7 @@ Shader "Custom/CurvedWorldShader"
         }
 
         void vert (inout appdata_full v) {
-            curveStrength *= 0.0001;
-
-            v.vertex = mul(unity_ObjectToWorld, v.vertex);
-
-            float3 origin = _WorldSpaceCameraPos;
-
-            float dist = v.vertex.z - origin.z;
-            dist = max(0, dist - curveFalloff);
-            float offset = curveStrength * dist * dist;
-
-            v.vertex.y -= offset;
-
-            v.vertex = mul(unity_WorldToObject, v.vertex);
+            v.vertex = curveWorld(v.vertex);
         }
 
         void surf (Input IN, inout SurfaceOutputStandard o)
@@ -84,7 +104,8 @@ Shader "Custom/CurvedWorldShader"
             for(int i = 0; i < layerCount; i++) {
                 float drawStrength = inverseLerp(-baseBlends[i]/2 - epsilon, baseBlends[i]/2, (heightPercent - baseStartHeights[i]));
                 float3 baseColour = baseColours[i] * baseColourStrength[i];
-                float3 baseTexture = saturate(triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i) + baseBrightnessCorrection[i]);
+                float3 rawWorldPos = float3(IN.worldPos.x, inverseCurveWorld(IN.worldPos).y, IN.worldPos.z);
+                float3 baseTexture = saturate(triplanar(rawWorldPos, baseTextureScales[i], blendAxes, i) + baseBrightnessCorrection[i]);
                 o.Albedo = o.Albedo * (1 - drawStrength) + (baseColour + baseTexture) * drawStrength;
             }
 

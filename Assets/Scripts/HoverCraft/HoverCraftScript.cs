@@ -12,7 +12,8 @@ public class HoverCraftScript : MonoBehaviour
     public HorizontalMovementMode horizontalMovementMode;
     public float forwardAccel;
     public float reverseAccel;
-    public float lateralAccel;
+    public float lateralAccel; // If lateral movement is acceleration-based (Strafing)
+    public float lateralRatio = 0.5f; // If lateral movement is velocity setting-based (Strafing Endless)
     public float turnThreshold = 10f;
     public float turnResponsiveness = 1f;
     public float drag;
@@ -39,6 +40,7 @@ public class HoverCraftScript : MonoBehaviour
     // Right is positive
     float lateralSpeed;
     bool onGround;
+    Vector3 initialForward;
     float yEulerAngle;
     
     // Start is called before the first frame update
@@ -47,6 +49,7 @@ public class HoverCraftScript : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
         inputManager = GetComponent<InputScript>();
 
+        initialForward = transform.forward;
         yEulerAngle = transform.eulerAngles.y;
     }
 
@@ -103,14 +106,14 @@ public class HoverCraftScript : MonoBehaviour
             rigidBody.MoveRotation(Quaternion.Lerp(rigidBody.rotation, rotation * yRotation, Time.deltaTime * groundRealignResponsiveness));
 
         } else if(horizontalMovementMode == HorizontalMovementMode.TurningEndless){
-            CalibrateRotationEndless(rotation);
+            CalibrateRotationTurningEndless(rotation);
         } else if(horizontalMovementMode == HorizontalMovementMode.Turning) {
             // Final Rotation
             rigidBody.MoveRotation(Quaternion.Lerp(rigidBody.rotation, rotation, Time.deltaTime * groundRealignResponsiveness));
         }
     }
 
-    void CalibrateRotationEndless(Quaternion rotation){
+    void CalibrateRotationTurningEndless(Quaternion rotation){
         if(Mathf.Abs(inputManager.horizontal) < inputManager.horizontalInputThresh + 0.1 && onGround){
             // To face forward
             float angleCorrection = (transform.eulerAngles.y - yEulerAngle > 180) ? 360 : 0;
@@ -138,8 +141,10 @@ public class HoverCraftScript : MonoBehaviour
         }
 
         // Horizontal
-        if(horizontalMovementMode == HorizontalMovementMode.Strafing || horizontalMovementMode == HorizontalMovementMode.StrafingEndless){
+        if(horizontalMovementMode == HorizontalMovementMode.Strafing){
             CalculateLateralMovement();
+        } else if(horizontalMovementMode == HorizontalMovementMode.StrafingEndless){
+            CalculateLateralMovementEndless();
         } else if(horizontalMovementMode == HorizontalMovementMode.Turning){
             CalculateTurning();
         } else if(horizontalMovementMode == HorizontalMovementMode.TurningEndless){
@@ -149,7 +154,8 @@ public class HoverCraftScript : MonoBehaviour
 
     void StraightMovementEndless(){
         if(onGround){
-            float force = forwardAccel - drag * Mathf.Abs(straightSpeed);
+            float forwardRatio = Vector3.Dot(initialForward, transform.forward);
+            float force = forwardAccel / forwardRatio - drag * Mathf.Abs(straightSpeed);
             rigidBody.AddForce(transform.forward * force, ForceMode.Force);
         }
     }
@@ -215,6 +221,25 @@ public class HoverCraftScript : MonoBehaviour
             shipBody.rotation = Quaternion.Lerp(shipBody.rotation, bodyRotation, Time.deltaTime * 10f);
         } else {
             shipBody.rotation = Quaternion.Lerp(shipBody.rotation, transform.rotation, Time.deltaTime * 2.5f);
+        }
+    }
+
+    void CalculateLateralMovementEndless(){
+        // Lateral Movement
+        // Right is positive
+        float currentLateralSpeed = Vector3.Dot(rigidBody.velocity, transform.right);
+        float lateralSpeedChange = inputManager.horizontal * straightSpeed * lateralRatio - currentLateralSpeed;
+        rigidBody.AddForce(transform.right * lateralSpeedChange, ForceMode.VelocityChange);
+
+        // Cosmetic Roll
+        if(onGround){
+            float angle = angleOfRoll * -inputManager.horizontal;
+            Quaternion bodyRotation = transform.rotation * Quaternion.Euler(0f, 0f, angle);
+            shipBody.rotation = Quaternion.Lerp(shipBody.rotation, bodyRotation, Time.deltaTime * 10f);
+        } else {
+            float angle = angleOfRoll * -inputManager.horizontal / 2;
+            Quaternion bodyRotation = transform.rotation * Quaternion.Euler(0f, 0f, angle);
+            shipBody.rotation = Quaternion.Lerp(shipBody.rotation, bodyRotation, Time.deltaTime * 2.5f);
         }
     }
 

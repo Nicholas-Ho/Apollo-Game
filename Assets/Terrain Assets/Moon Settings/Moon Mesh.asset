@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Moon Mesh
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  chunkSizeIndex: 1
+  chunkSizeIndex: 0
   flatShadingChunkSizeIndex: 2
   meshScale: 1
   useFlatShading: 0

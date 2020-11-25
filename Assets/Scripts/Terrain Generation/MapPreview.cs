@@ -47,11 +47,11 @@ public class MapPreview : MonoBehaviour
         if(drawMode == DrawMode.noiseMap){
             DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
         } else if(drawMode == DrawMode.Mesh){
-            DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.values, editorLevelOfDetail, meshSettings));
+            DrawMesh(GenerateMesh(heightMap.values, editorLevelOfDetail, meshSettings));
         } else if(drawMode == DrawMode.falloffMap){
             DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffMapGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine), 0, 1)));
         } else if(drawMode == DrawMode.Scene){
-            DrawScene(MeshGenerator.GenerateTerrainMesh(heightMap.values, editorLevelOfDetail, meshSettings));
+            DrawScene(GenerateMesh(heightMap.values, editorLevelOfDetail, meshSettings));
         }
     }
 
@@ -62,6 +62,12 @@ public class MapPreview : MonoBehaviour
 
         textureRenderer.gameObject.SetActive(true);
         meshFilter.gameObject.SetActive(false);
+    }
+
+    MeshData GenerateMesh(float[,] heightMap, int levelOfDetail, MeshSettings meshSettings){
+        MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap, levelOfDetail, meshSettings);
+
+        return meshData;
     }
 
     public void DrawMesh(MeshData meshData)

@@ -25,6 +25,7 @@ public class TerrainChunk
 
     HeightMap heightMap;
     bool heightMapReceived;
+    int lodIndex;
     int previousLODIndex = -1;
 
     bool hasSetCollider = false;
@@ -134,7 +135,7 @@ public class TerrainChunk
             bool visible = viewerDistFromEdge < maxViewingDist;
 
             if(visible){
-                int lodIndex = 0;
+                lodIndex = 0;
 
                 for(int i = 0; i < detailLevels.Length - 1; i++){
                     if(viewerDistFromEdge > detailLevels[i].visibleDstThreshold){
@@ -182,7 +183,7 @@ public class TerrainChunk
             }
 
             if(visible){
-                int lodIndex = 0;
+                lodIndex = 0;
 
                 for(int i = 0; i < detailLevels.Length - 1; i++){
                     if(viewerDistFromEdge > detailLevels[i].visibleDstThreshold){
@@ -251,30 +252,6 @@ public class TerrainChunk
     }
 
     void Populate(){
-        /*float maxHeight = heightMapSettings.maxHeight;
-        Transform transform = this.meshObject.GetComponent<Transform>();
-
-        Vector2 regionSize = new Vector2(meshSettings.meshWorldSize, meshSettings.meshWorldSize);
-        List<Vector3> objectPositions = PoissonDiscSampling.GeneratePointsVariableRadii(populateSettings.radiiArray, populateSettings.ratioArray, regionSize, populateSettings.numSamplesBeforeRejection, "object_index");
-
-        RaycastHit hit;
-        if(objectPositions != null && objectPositions.Count > 0){
-            Debug.Log(objectPositions.Count);
-            foreach(Vector3 objectPosition in objectPositions){
-                int objectIndex = (int)objectPosition.z;
-
-                float xPos = coord.x * meshSettings.meshWorldSize + (objectPosition.x - (meshSettings.meshWorldSize / 2));
-                float zPos = coord.y * meshSettings.meshWorldSize + (objectPosition.y - (meshSettings.meshWorldSize / 2));
-                Ray ray = new Ray(new Vector3(xPos, maxHeight, zPos), Vector3.down);
-                if(meshCollider.Raycast(ray, out hit, maxHeight)){
-                    Vector3 objectPos3D = new Vector3(xPos, maxHeight - hit.distance, zPos);
-                    Debug.Log(objectPos3D);
-                    Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal.normalized);
-                    GameObject newObject = GameObject.Instantiate(populateSettings.objectInfoList[objectIndex].gameObject, objectPos3D, rotation);
-                    newObject.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up);
-                }
-            }
-        }*/
         PopulationObjectManager populationObjectManager = UnityEngine.Object.FindObjectOfType<PopulationObjectManager>();
         populationObjectManager.Populate(coord, heightMapSettings.maxHeight, meshSettings.meshWorldSize, meshCollider);
     }
@@ -297,8 +274,7 @@ class LODMesh{
     }
 
     public void OnMeshDataReceived(object meshDataObject){
-        MeshData meshData = (MeshData) meshDataObject;
-        mesh = meshData.createMesh();
+        mesh = ((MeshData)meshDataObject).createMesh();
         hasMesh = true;
 
         updateCallback();
