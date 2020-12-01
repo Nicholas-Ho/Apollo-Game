@@ -6,6 +6,7 @@ public class HoverCraftScript : MonoBehaviour
 {
     Rigidbody rigidBody;
     InputScript inputManager;
+    PauseScript pauseScript;
     public enum HorizontalMovementMode {Turning, Strafing, TurningEndless, StrafingEndless};
     public Transform HoverPointCentre;
     [Header("Drive Settings")]
@@ -48,6 +49,7 @@ public class HoverCraftScript : MonoBehaviour
     {
         rigidBody = GetComponent<Rigidbody>();
         inputManager = GetComponent<InputScript>();
+        pauseScript = FindObjectOfType<PauseScript>();
 
         initialForward = transform.forward;
         yEulerAngle = transform.eulerAngles.y;

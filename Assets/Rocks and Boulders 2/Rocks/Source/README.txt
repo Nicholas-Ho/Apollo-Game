@@ -1,1 +1,0 @@
-Materials can be found under "Assets/Resources/Object Materials/Unity 5"

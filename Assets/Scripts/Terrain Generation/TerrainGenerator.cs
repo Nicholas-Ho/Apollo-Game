@@ -24,14 +24,22 @@ public class TerrainGenerator : MonoBehaviour
     List<TerrainChunk> terrainChunkPool = new List<TerrainChunk>();
     static List<TerrainChunk> VisibleTerrainChunks = new List<TerrainChunk>();
 
+    public bool randomizeSeedOnPlay;
+
     void Start()
     {
+        VisibleTerrainChunks.Clear();
+
         textureSettings.ApplyToMaterial(mapMaterial);
         textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight * meshSettings.meshScale, heightMapSettings.maxHeight * meshSettings.meshScale);
 
         float maxViewingDist = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
         meshWorldSize = meshSettings.meshWorldSize;
         chunksViewableInDist = Mathf.RoundToInt(maxViewingDist / meshWorldSize);
+
+        if(randomizeSeedOnPlay){
+            heightMapSettings.noiseSettings.seed = (int)System.DateTime.Now.Ticks;
+        }
 
         if(!endlessMode){
             UpdateVisibleChunks();

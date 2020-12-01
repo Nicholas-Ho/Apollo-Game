@@ -34,7 +34,6 @@ public class TerrainChunk
     bool wasReassigned = false;
 
     bool populated = false;
-    List<GameObject> objectsInScene = new List<GameObject>();
 
     HeightMapSettings heightMapSettings;
     MeshSettings meshSettings;

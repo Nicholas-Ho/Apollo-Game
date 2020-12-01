@@ -5,14 +5,15 @@ using UnityEngine;
 public class PopulationObjectManager : MonoBehaviour
 {
     public PopulateSettings populateSettings;
-    public TerrainGenerator terrainGenerator;
+    [SerializeField]
+    protected TerrainGenerator terrainGenerator;
     public float endlessDistBehindViewer = 20;
-    Transform viewer;
-    float maxViewDist;
+    protected Transform viewer;
+    protected float maxViewDist;
     bool endless;
     List<PopulationObjectData> gameObjectManager = new List<PopulationObjectData>();
     List<PopulationObjectData> activeGameObjects = new List<PopulationObjectData>();
-    Dictionary<int, List<PopulationObjectData>> gameObjectPool = new Dictionary<int, List<PopulationObjectData>>(); // A list for each object type (object index as key) holding gameObjectManager index
+    protected Dictionary<int, List<PopulationObjectData>> gameObjectPool = new Dictionary<int, List<PopulationObjectData>>(); // A list for each object type (object index as key) holding gameObjectManager index
 
     // Start is called before the first frame update
     void Start()

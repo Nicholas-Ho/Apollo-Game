@@ -1,8 +1,16 @@
 ## Apollo: Blitz the Moon
 
-Apollo is an endless runner game, in which you pilot a Hovership across the surface of the moon.
+Apollo is an endless runner game, in which you pilot a Hovership across the surface of the moon. Avoid the rocks and get as far as you can!
 
 Apollo is built on **Unity**.
+
+## Controls
+
+Movement: `A` and `D` (or the left and right arrow keys)
+
+Pause: `Esc`, `Space`, `Enter` or `P`
+
+Quit: `Esc` (on Title and Score screens only), "*Quit*" Button in Pause Menu (Play screen only)
 
 ## Build Status
 
@@ -10,13 +18,21 @@ In progress.
 
 ## Features
 
-Apollo features a fully procedurally-generated world, and includes a system for terrain generation, terrain object population and a curved world shader.
+Apollo features a **fully procedurally-generated game world** that you can traverse through on your hovership. It is based on Sebastian Lague's *Procedural Terrain Generation* video series, but has been adapted to include the following:
 
-Apollo also features a Hovercraft physics system, with tweakable parameters and four different kinds of movement.
+- Optimizations for an Endless Runner (Terrain Object pooling, not updating chunks behind vehicle)
+- Two Additional Types of Noise (Ridged and Billow)
+- A Terrain Object Population System (modified from Sebastian Lague's *Poisson Disc Sampling* video to allow multi-radii outputs)
+- A Curved World Shader
+
+Apollo also features a **Hovercraft physics system**. It is based on Unity's *Hover Racer Demo*, modified to include the following:
+
+- Four kinds of movement (Free Strafing, Free Turning, Strafing for Endless Runner, Turning for Endless Runner)
+- Additional tweakable parameters (eg. Responsiveness to ground rotation, turn responsiveness)
 
 ## Installation
 
-You would need to install Unity to run this project. It is built on **Unity 2020.1.4f1**, though other versions of Unity should be able to open the project as well (untested). Directly downloading and unzipping the repository should allow Unity to open it as a new project.
+You would need to install Unity to run this project. It is built on **Unity 2020.1.4f1**, though other versions of Unity should be able to open the project as well (untested). Directly downloading and unzipping the repository should allow Unity to open it as a new project. It runs on the **Built-in Render Pipeline**.
 
 The working folder is `Assets`. Here, you can find both the game assets used as well as the scripts that the game runs on. Here is a breakdown of the folders:
 
@@ -24,14 +40,16 @@ The working folder is `Assets`. Here, you can find both the game assets used as 
 - The `Editor Scripts` folder contains the C# scripts used to edit the Unity Editor for easy tweaking and debugging.
 - The `Terrain Assets` folder houses the Scriptable Object assets that hold the settings for terrain generation.
 - The `Material` folder contains the materials used for the terrain, while `Resources` contains the materials used for the "Rocks and Boulders 2" prefabs.
-- The `Scenes` folder contains the Scene objects. At the moment only one Scene (Playstate) is used.
+- The `Scenes` folder contains the Scene objects. There are three Scenes: the Start State, Play State and Score State.
+- The `Fonts` folder contains the fonts used in the game. All fonts come from the *Lato* family of fonts.
+- The `UI` folder contains any assets or images required for the UI. At the moment it only contains a White Screen PNG.
 - The `Standard Assets` folder contains the prefab for a first-person controller and associated scripts. It is used for debugging only.
 
 The following folders contain free assets from the Unity Asset Store:
 
-- `AllSkyFree`
-- `Rocks and Boulders 2`
+- `Environment Assets`
 - `Vehicles`
+- `Effects`
 
 ## Credits
 
@@ -44,10 +62,10 @@ Resources used:
 Assets Used:
 
 - **AllSkyFree** by *RPGWHITELOCK*
+- **Starfield Skybox** by *PULSAR BYTES*
 - **Rocks and Boulders 2** by *MANUFACTURA K4*
 - **Dieselpunk Hovercraft 01 PBR** by *ALEXANDER Z*
 - **Star Sparrow Modular Spaceship** by *EBAL STUDIOS*
-- **Free SF Fighter** by *CGPITBULL*
 
 ## License
 
