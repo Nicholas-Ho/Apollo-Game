@@ -17,8 +17,8 @@ public class CameraScript : MonoBehaviour
         Vector3 projection = Vector3.ProjectOnPlane(viewer.transform.forward, new Vector3(0, 1, 0)).normalized;
         transform.position = viewer.transform.position;
         
-        if(viewerHorMovementMode == HoverCraftScript.HorizontalMovementMode.Turning){
+        /*if(viewerHorMovementMode == HoverCraftScript.HorizontalMovementMode.Turning){
             transform.forward = projection;
-        }
+        }*/
     }
 }

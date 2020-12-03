@@ -33,6 +33,7 @@ public class TerrainChunk
     bool endless = false;
     bool wasReassigned = false;
 
+    bool isStarting = false;
     bool populated = false;
 
     HeightMapSettings heightMapSettings;
@@ -41,6 +42,17 @@ public class TerrainChunk
     Transform viewer;
     public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material, Transform viewer, bool endless)
     {
+        InitializeChunk(coord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, parent, material, viewer, endless);
+    }
+
+    // Overloaded constructor used for starting chunk
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material, Transform viewer, bool endless, bool starting)
+    {
+        this.isStarting = starting;
+        InitializeChunk(coord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, parent, material, viewer, endless);
+    }
+
+    void InitializeChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Material material, Transform viewer, bool endless){
         this.endless = endless;
 
         this.viewer = viewer;
@@ -252,7 +264,7 @@ public class TerrainChunk
 
     void Populate(){
         PopulationObjectManager populationObjectManager = UnityEngine.Object.FindObjectOfType<PopulationObjectManager>();
-        populationObjectManager.Populate(coord, heightMapSettings.maxHeight, meshSettings.meshWorldSize, meshCollider);
+        populationObjectManager.Populate(coord, heightMapSettings.maxHeight, meshSettings.meshWorldSize, meshCollider, isStarting);
     }
 }
 

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class PIDController : MonoBehaviour
+public class PIDController
 {
-	public string Label;
     //Our PID coefficients for tuning the controller
 	public float pCoeff = .8f;
 	public float iCoeff = .0002f;
@@ -16,6 +15,15 @@ public class PIDController : MonoBehaviour
 	//Variables to store values between calculations
 	float integral;
 	float lastProportional;
+
+	//Constructor
+	public PIDController(PIDControllerSettings settings){
+		this.pCoeff = settings.pCoeff;
+		this.iCoeff = settings.iCoeff;
+		this.dCoeff = settings.dCoeff;
+		this.minimum = settings.minimum;
+		this.maximum = settings.maximum;
+	}
 
 	//We pass in the value we want and the value we currently have, the code
 	//returns a number that moves us towards our goal

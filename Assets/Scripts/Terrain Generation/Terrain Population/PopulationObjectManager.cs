@@ -31,6 +31,55 @@ public class PopulationObjectManager : MonoBehaviour
         UpdateAllGameObjects();
     }
 
+    // Populate but with a true/false overload to indicate whether the hovercraft is starting above the chunk
+    public void Populate(Vector2 coord, float maxHeight, float meshWorldSize, MeshCollider meshCollider, bool isStarting){
+        if(isStarting){
+            Vector2 regionSize = new Vector2(meshWorldSize, meshWorldSize);
+            List<Vector2> objectPositions = PoissonDiscSampling.GeneratePoints(populateSettings.radius, regionSize, populateSettings.numSamplesBeforeRejection);
+
+            RaycastHit hit;
+            if(objectPositions != null && objectPositions.Count > 0){
+                foreach(Vector2 objectPosition in objectPositions){
+                    int objectIndex = populateSettings.simpleObjectIndices[Random.Range(0, populateSettings.simpleObjectIndices.Length)];
+
+                    float xPos = coord.x * meshWorldSize + (objectPosition.x - (meshWorldSize / 2));
+                    float zPos = coord.y * meshWorldSize + (objectPosition.y - (meshWorldSize / 2));
+                    Ray ray = new Ray(new Vector3(xPos, maxHeight, zPos), Vector3.down);
+                    if(meshCollider.Raycast(ray, out hit, maxHeight)){
+                        Vector3 objectPos3D = new Vector3(xPos, maxHeight - hit.distance, zPos);
+                        if(gameObjectPool[objectIndex].Count > 0){
+                            PopulationObjectData reassignedObjectData = gameObjectPool[objectIndex][gameObjectPool[objectIndex].Count - 1];
+                            GameObject reassignedObject = reassignedObjectData.gameObject;
+
+                            Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal.normalized);
+                            reassignedObject.transform.position = objectPos3D;
+                            reassignedObject.transform.rotation = rotation;
+                            reassignedObject.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), reassignedObject.transform.up);
+
+                            reassignedObject.SetActive(true);
+                            activeGameObjects.Add(reassignedObjectData);
+                            gameObjectPool[objectIndex].Remove(reassignedObjectData);
+                        } else {
+                            Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hit.normal.normalized);
+                            GameObject newObject = GameObject.Instantiate(populateSettings.objectInfoList[objectIndex].gameObject, objectPos3D, rotation);
+                            newObject.transform.rotation = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), newObject.transform.up);
+
+                            newObject.transform.parent = transform;
+                            PopulationObjectData info = new PopulationObjectData();
+                            info.gameObject = newObject;
+                            info.objectIndex = objectIndex;
+                            activeGameObjects.Add(info);
+                            gameObjectManager.Add(info);
+                        }
+                    }
+                }
+            }
+        } else {
+            // If it is not the starting chunk then populate as per normal
+            Populate(coord, maxHeight, meshWorldSize, meshCollider);
+        }
+    }
+
     public void Populate(Vector2 coord, float maxHeight, float meshWorldSize, MeshCollider meshCollider){
 
         Vector2 regionSize = new Vector2(meshWorldSize, meshWorldSize);

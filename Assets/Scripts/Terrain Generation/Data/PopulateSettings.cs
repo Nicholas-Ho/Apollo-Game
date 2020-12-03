@@ -7,6 +7,8 @@ public class PopulateSettings : UpdatableObject
 {
     public float radius;
     public int numSamplesBeforeRejection;
+    public int[] simpleObjectIndices;
+    [HideInInspector]
     public List<GameObject> simpleObjectList = new List<GameObject>();
     public List<PopulateObjectsInfo> objectInfoList = new List<PopulateObjectsInfo>();
 
@@ -25,6 +27,10 @@ public class PopulateSettings : UpdatableObject
         for(int i = 0; i < numObjects; i++){
             radiiArray[i] = objectInfoList[i].radius;
             ratioArray[i] = objectInfoList[i].probability;
+        }
+
+        for(int i = 0; i < simpleObjectIndices.Length; i++){
+            simpleObjectList[i] = objectInfoList[simpleObjectIndices[i]].gameObject;
         }
 
         base.OnValidate();

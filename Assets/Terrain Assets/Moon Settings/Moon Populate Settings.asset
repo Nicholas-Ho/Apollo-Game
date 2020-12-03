@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Moon Populate Settings
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  radius: 40
+  radius: 20
   numSamplesBeforeRejection: 20
-  simpleObjectList: []
+  simpleObjectIndices: 0000000001000000
+  simpleObjectList:
+  - {fileID: 100000, guid: 5d4cffe5f1249a046b3bc42bbd99dc47, type: 3}
+  - {fileID: 100008, guid: 54a9cf01843431742a3126013891032d, type: 3}
   objectInfoList:
   - gameObject: {fileID: 100000, guid: 5d4cffe5f1249a046b3bc42bbd99dc47, type: 3}
     radius: 20

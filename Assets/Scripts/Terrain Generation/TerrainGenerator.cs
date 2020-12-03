@@ -41,6 +41,7 @@ public class TerrainGenerator : MonoBehaviour
             heightMapSettings.noiseSettings.seed = (int)System.DateTime.Now.Ticks;
         }
 
+        SpawnStartChunk();
         if(!endlessMode){
             UpdateVisibleChunks();
         } else {
@@ -151,6 +152,22 @@ public class TerrainGenerator : MonoBehaviour
                 terrainChunkPool.Add(chunk);
             }
         }
+    }
+
+    void SpawnStartChunk(){
+        int currentChunkCoordX = Mathf.RoundToInt(viewerPos.x / meshWorldSize);
+        int currentChunkCoordY = Mathf.RoundToInt(viewerPos.y / meshWorldSize);
+        Vector2 currentChunkCoord = new Vector2(currentChunkCoordX, currentChunkCoordY);
+
+        TerrainChunk newChunk = new TerrainChunk(currentChunkCoord, heightMapSettings, meshSettings, detailLevels, colliderLODIndex, transform, mapMaterial, viewer, false, true);
+        terrainChunkDict.Add(currentChunkCoord, newChunk);
+
+        newChunk.onVisibilityChange += OnChunkVisibilityChange;
+        if(endlessMode){
+            newChunk.onVisibilityChangeEndless += OnChunkVisibilityChangeEndless;
+        }
+
+        newChunk.Load();
     }
 }
 
