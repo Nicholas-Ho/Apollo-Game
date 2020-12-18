@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class DeathScript : MonoBehaviour
 {
     PauseScript pauseScript;
+    AudioSource explosionAudio;
 
     GameObject meshes;
     HoverCraftScript hoverCraftScript;
@@ -18,6 +19,7 @@ public class DeathScript : MonoBehaviour
         meshes = gameObject.transform.GetChild(0).gameObject;
         hoverCraftScript = gameObject.GetComponent<HoverCraftScript>();
         explosion = gameObject.transform.GetChild(1).gameObject.GetComponent<ParticleSystem>();
+        explosionAudio = DontDestroy.instances[0].GetComponents<AudioSource>()[1];
         explosion.Stop(true);
     }
 
@@ -26,6 +28,7 @@ public class DeathScript : MonoBehaviour
         pauseScript.pauseActive = false;
 
         explosion.Play();
+        explosionAudio.Play();
         hoverCraftScript.enabled = false;
         gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
         meshes.SetActive(false);

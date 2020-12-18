@@ -33,6 +33,22 @@
         float curveStrength;
         float curveFalloff;
 
+        float4 curveWorld(float4 position){
+            curveStrength *= 0.0001;
+
+            position = mul(unity_ObjectToWorld, position);
+
+            float3 origin = _WorldSpaceCameraPos;
+
+            float dist = position.z - origin.z;
+            dist = max(0, dist - curveFalloff);
+            float offset = curveStrength * dist * dist;
+
+            position.y -= offset;
+
+            return mul(unity_WorldToObject, position);
+        }
+
         // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
         // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
         // #pragma instancing_options assumeuniformscaling
@@ -41,19 +57,7 @@
         UNITY_INSTANCING_BUFFER_END(Props)
 
         void vert (inout appdata_full v) {
-            curveStrength *= 0.0001;
-
-            v.vertex = mul(unity_ObjectToWorld, v.vertex);
-
-            float3 origin = _WorldSpaceCameraPos;
-
-            float dist = v.vertex.z - origin.z;
-            dist = max(0, dist - curveFalloff);
-            float offset = curveStrength * dist * dist;
-
-            v.vertex.y -= offset;
-
-            v.vertex = mul(unity_WorldToObject, v.vertex);
+            v.vertex = curveWorld(v.vertex);
         }
 
         void surf (Input IN, inout SurfaceOutputStandard o)

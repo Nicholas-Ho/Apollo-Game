@@ -16,6 +16,7 @@ public class TitleButton : MonoBehaviour
 
     void LoadStartState()
     {
+        DontDestroy.clearDontDestroy();
         SceneManager.LoadScene("StartState");
     }
 }

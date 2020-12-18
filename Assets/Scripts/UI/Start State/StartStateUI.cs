@@ -101,6 +101,7 @@ public class StartStateUI : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         
+        DontDestroy.clearDontDestroy();
         SceneManager.LoadScene("PlayState");
         yield return null;
     }

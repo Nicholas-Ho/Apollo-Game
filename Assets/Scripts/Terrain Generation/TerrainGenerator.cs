@@ -33,6 +33,8 @@ public class TerrainGenerator : MonoBehaviour
         textureSettings.ApplyToMaterial(mapMaterial);
         textureSettings.UpdateMeshHeights(mapMaterial, heightMapSettings.minHeight * meshSettings.meshScale, heightMapSettings.maxHeight * meshSettings.meshScale);
 
+        textureSettings.ApplyToAllObjectMaterials();
+
         float maxViewingDist = detailLevels[detailLevels.Length - 1].visibleDstThreshold;
         meshWorldSize = meshSettings.meshWorldSize;
         chunksViewableInDist = Mathf.RoundToInt(maxViewingDist / meshWorldSize);

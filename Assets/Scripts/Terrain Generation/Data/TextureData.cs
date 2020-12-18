@@ -37,6 +37,14 @@ public class TextureData : UpdatableObject
         material.SetFloat("curveFalloff", curveFalloff);
     }
 
+    public void ApplyToAllObjectMaterials(){
+        Object[] objectMaterials = Resources.LoadAll("Object Materials/Unity 5");
+
+        for(int i = 0; i < objectMaterials.Length; i++){
+            ApplyToObjectMaterial((Material)objectMaterials[i]);
+        }
+    }
+
     public void UpdateMeshHeights(Material material, float minHeight, float maxHeight){
         savedMinHeight = minHeight;
         savedMaxHeight = maxHeight;

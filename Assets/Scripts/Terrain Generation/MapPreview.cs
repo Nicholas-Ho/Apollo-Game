@@ -31,6 +31,7 @@ public class MapPreview : MonoBehaviour
 
     List<GameObject> sceneObjects = new List<GameObject>();
 
+    #if UNITY_EDITOR
     public void DrawMapInEditor(){
         int sceneObjectNum = sceneObjects.Count;
         for(int i = 0; i < sceneObjectNum; i++){
@@ -72,11 +73,13 @@ public class MapPreview : MonoBehaviour
 
     public void DrawMesh(MeshData meshData)
     {
-        meshFilter.sharedMesh = meshData.createMesh();
-        meshCollider.sharedMesh = meshFilter.sharedMesh;
+        if(meshFilter){
+            meshFilter.sharedMesh = meshData.createMesh();
+            //meshCollider.sharedMesh = meshFilter.sharedMesh;
 
-        textureRenderer.gameObject.SetActive(false);
-        meshFilter.gameObject.SetActive(true);
+            textureRenderer.gameObject.SetActive(false);
+            meshFilter.gameObject.SetActive(true);
+        }
     }
 
     public void DrawScene(MeshData meshData){
@@ -175,4 +178,5 @@ public class MapPreview : MonoBehaviour
             populateSettings.OnValuesUpdated += OnTextureValuesUpdated;
         }
     }
+    #endif
 }

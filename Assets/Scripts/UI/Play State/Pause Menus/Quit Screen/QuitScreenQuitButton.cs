@@ -17,6 +17,7 @@ public class QuitScreenQuitButton : MonoBehaviour
     void LoadStartState()
     {
         Time.timeScale = 1; // Unpause
+        DontDestroy.clearDontDestroy();
         SceneManager.LoadScene("StartState");
     }
 }

@@ -67,6 +67,11 @@ Assets Used:
 - **Dieselpunk Hovercraft 01 PBR** by *ALEXANDER Z*
 - **Star Sparrow Modular Spaceship** by *EBAL STUDIOS*
 
+Music Used (Royalty-Free):
+
+- **Cyber Dream Loop** by Soundimage.org
+- **The Darkness Below** by Soundimage.org
+
 ## License
 
 This project is licensed by the GNU Affero General Public License v3.0.
