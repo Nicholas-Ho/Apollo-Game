@@ -4,7 +4,7 @@ Apollo is an endless runner game, in which you pilot a Hovership across the surf
 
 Check out the gameplay right here: https://youtu.be/XvhCE7lx-ao
 
-![Gameplay](README Images/Gameplay.png)
+![Gameplay](README_Images/Gameplay.png)
 
 Apollo is built on **Unity**.
 
