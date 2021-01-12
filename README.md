@@ -18,7 +18,9 @@ Quit: `Esc` (on Title and Score screens only), "*Quit*" Button in Pause Menu (Pl
 
 ## Build Status
 
-In progress.
+This public version is **completed**.
+
+A close-sourced version of Apollo is still in the works. However, this repository will no longer be updated with the latest code. 
 
 ## Features
 
