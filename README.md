@@ -2,6 +2,10 @@
 
 Apollo is an endless runner game, in which you pilot a Hovership across the surface of the moon. Avoid the rocks and get as far as you can!
 
+Check out the gameplay right here: https://youtu.be/XvhCE7lx-ao
+
+![Gameplay](README Images/Gameplay.png)
+
 Apollo is built on **Unity**.
 
 ## Controls
@@ -51,6 +55,8 @@ The following folders contain free assets from the Unity Asset Store:
 - `Vehicles`
 - `Effects`
 
+The `Sound` folder contains Royalty-Free effects and music used in the project.
+
 ## Credits
 
 Resources used:
@@ -67,10 +73,11 @@ Assets Used:
 - **Dieselpunk Hovercraft 01 PBR** by *ALEXANDER Z*
 - **Star Sparrow Modular Spaceship** by *EBAL STUDIOS*
 
-Music Used (Royalty-Free):
+Sound Effects and Music Used (Royalty-Free):
 
-- **Cyber Dream Loop** by Soundimage.org
-- **The Darkness Below** by Soundimage.org
+- **Cyber Dream Loop** by *Soundimage.org*
+- **The Darkness Below** by *Soundimage.org*
+- **Explosion - Fireball** by *Zapsplat*
 
 ## License
 
